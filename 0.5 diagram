@@ -1,0 +1,23 @@
+```mermaid
+sequenceDiagram
+    participant User
+    participant Browser
+    participant Server
+
+    User->>Browser: Navigates to /spa
+    Browser->>Server: GET /spa
+    activate Server
+    Server-->>Browser: HTML page
+    deactivate Server
+
+    Browser->>Server: GET main.css
+    Server-->>Browser: CSS file
+
+    Browser->>Server: GET main.js
+    Server-->>Browser: JavaScript bundle
+
+    Browser->>Server: GET /data.json
+    Server-->>Browser: JSON data of notes
+
+    Note right of Browser: React renders notes from JSON<br>without full page reload
+```
