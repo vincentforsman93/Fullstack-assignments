@@ -1,0 +1,51 @@
+import { useState } from 'react'
+
+const Button = ({ onClick, children }) => (
+  <button onClick={onClick}>{children}</button>
+)
+
+const StatisticLine = ({ label, value }) => (
+  <p>{label} {value}</p>
+)
+
+const Statistics = ({ good, neutral, bad }) => {
+  const total = good + neutral + bad
+  if (total === 0) {
+    return <p>No feedback given</p>
+  }
+
+  const score = good - bad
+  const average = score / total
+  const positive = (good / total) * 100
+
+  return (
+    <div>
+      <h2>statistics</h2>
+      <StatisticLine label="good" value={good} />
+      <StatisticLine label="neutral" value={neutral} />
+      <StatisticLine label="bad" value={bad} />
+      <StatisticLine label="all" value={total} />
+      <StatisticLine label="average" value={average.toFixed(2)} />
+      <StatisticLine label="positive" value={`${positive.toFixed(1)} %`} />
+    </div>
+  )
+}
+
+const App = () => {
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  return (
+    <div>
+      <h1>give feedback</h1>
+      <Button onClick={() => setGood(good + 1)}>good</Button>
+      <Button onClick={() => setNeutral(neutral + 1)}>neutral</Button>
+      <Button onClick={() => setBad(bad + 1)}>bad</Button>
+
+      <Statistics good={good} neutral={neutral} bad={bad} />
+    </div>
+  )
+}
+
+export default App
