@@ -1,0 +1,74 @@
+import { useState } from 'react'
+
+const Button = ({ onClick, children }) => (
+  <button onClick={onClick}>{children}</button>
+)
+
+const StatisticLine = ({ label, value }) => (
+  <p>{label} {value}</p>
+)
+
+
+const GoodStat = ({ good }) => <StatisticLine label="good" value={good} />
+const NeutralStat = ({ neutral }) => <StatisticLine label="neutral" value={neutral} />
+const BadStat = ({ bad }) => <StatisticLine label="bad" value={bad} />
+
+const AllStat = ({ good, neutral, bad }) => {
+  const total = good + neutral + bad
+  return <StatisticLine label="all" value={total} />
+}
+
+const AverageStat = ({ good, neutral, bad }) => {
+  const total = good + neutral + bad
+  if (total === 0) return null
+  const score = good - bad
+  const average = score / total
+  return <StatisticLine label="average" value={average.toFixed(2)} />
+}
+
+const PositiveStat = ({ good, neutral, bad }) => {
+  const total = good + neutral + bad
+  if (total === 0) return null
+  const positive = (good / total) * 100
+  return <StatisticLine label="positive" value={positive.toFixed(2) + " %"} />
+}
+
+
+const Statistics = ({ good, neutral, bad }) => {
+  const total = good + neutral + bad
+  if (total === 0) {
+    return <p>No feedback given</p>
+  }
+
+  return (
+    <div>
+      <h2>statistics</h2>
+      <GoodStat good={good} />
+      <NeutralStat neutral={neutral} />
+      <BadStat bad={bad} />
+      <AllStat good={good} neutral={neutral} bad={bad} />
+      <AverageStat good={good} neutral={neutral} bad={bad} />
+      <PositiveStat good={good} neutral={neutral} bad={bad} />
+    </div>
+  )
+}
+
+
+const App = () => {
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  return (
+    <div>
+      <h1>give feedback</h1>
+      <Button onClick={() => setGood(good + 1)}>good</Button>
+      <Button onClick={() => setNeutral(neutral + 1)}>neutral</Button>
+      <Button onClick={() => setBad(bad + 1)}>bad</Button>
+
+      <Statistics good={good} neutral={neutral} bad={bad} />
+    </div>
+  )
+}
+
+export default App
